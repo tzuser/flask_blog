@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+    {% for post in posts %}
+    <article class="uk-article">
+        <h1 class="uk-article-title"><a class="uk-link-reset" href="{{ url_for('post',post_id=post.id) }}">{{ post.title }}</a></h1>
+        <p class="uk-article-meta">{{ post.publish_date }}</p>
+        <p class="uk-text-lead">
+            {{ post.text | truncate(100) }}
+        </p>
+        <div class="uk-grid-small uk-grid" uk-grid="">
+            <div class="uk-first-column">
+                <a class="uk-button uk-button-text" href="{{ url_for('post',post_id=post.id) }}">查看</a>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+{% endblock %}
