@@ -3,7 +3,7 @@
 {% block body %}
      <div class="col-lg-12">
         <article class="uk-article">
-            <h1 class="uk-article-title"><a class="uk-link-reset" href="{{ url_for('post',post_id=post.id) }}">{{ post.title }}</a></h1>
+            <h1 class="uk-article-title"><a class="uk-link-reset" href="{{ url_for('.post',post_id=post.id) }}">{{ post.title }}</a></h1>
             <p class="uk-article-meta">{{ post.publish_date }}</p>
             <p class="uk-text-lead">
                 {{ post.text | safe }}
@@ -12,7 +12,7 @@
         <hr class="uk-margin-medium">
 
         <h3>发表评论:</h3>
-        <form method="POST" class="uk-form-stacked" action="{{ url_for('post',post_id=post.id) }}">
+        <form method="POST" class="uk-form-stacked" action="{{ url_for('.post',post_id=post.id) }}">
             {{ form.hidden_tag() }}
             <div class="uk-margin-small">
                 {{ form.name.label(class_='uk-form-label') }}
