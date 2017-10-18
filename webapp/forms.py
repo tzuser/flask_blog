@@ -26,7 +26,7 @@ class LoginForm(Form):
             self.username.errors.append(u'用户不存在')
             return False
         if not user.check_password(self.password.data):
-            self.username.errors.append(u'密码错误')
+            self.password.errors.append(u'密码错误')
             return False
 
         return True
@@ -34,11 +34,11 @@ class LoginForm(Form):
 
 class RegisterForm(Form):
     username = StringField(u'用户名', [DataRequired(), Length(max=255)])
-    password = PasswordField(u'密码', [DataRequired(), Length(min=8)])
+    password = PasswordField(u'密码', [DataRequired(), Length(min=6)])
     confirm = PasswordField(u'确认密码', [DataRequired(), EqualTo('password')])
 
     def validate(self):
-        check_validate = super(LoginForm, self).validate()
+        check_validate = super(RegisterForm, self).validate()
         if not check_validate:
             return False
         user = User.query.filter_by(username=self.username.data).first()
