@@ -15,7 +15,7 @@ class User(db.Model):
     password = db.Column(db.String(255))
     posts = db.relationship('Post', backref='user', lazy='dynamic')
 
-    def __init__(self, username):
+    def __init__(self, username=None):
         self.username = username
 
     def __repr__(self):
