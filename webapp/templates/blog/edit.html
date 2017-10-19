@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}编辑{% endblock %}
+{% block body %}
+    <form method="post" action="{{ url_for('.edit',id=post.id) }}"  class="uk-form-stacked">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label() }}
+            {{ form.title(class="form-control",value=post.title) }}
+        </div>
+        <div class="form-group">
+            {{ form.text.label() }}
+            {{ form.text(id='editor',class="form-control",rows=5) }}
+            {% if form.text.errors %}
+                {% for e in form.text.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <input class="btn btn-primary" type="submit" value="发布">
+    </form>
+{% endblock %}
+{% block js %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create( document.querySelector( '#editor' ) )
+    </script>
+{% endblock %}

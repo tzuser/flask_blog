@@ -1,38 +1,28 @@
 {% extends "base.html" %}
 {% block title %}登录{% endblock %}
 {% block body %}
-<form method="POST" action="{{ url_for('.login') }}" class="uk-form-stacked">
+<form method="POST" action="{{ url_for('.login') }}">
     {{ form.hidden_tag() }}
-    <div class="uk-margin">
-        {{ form.username.label(class="uk-form-label") }}
-        <div class="uk-inline">
-            <span class="uk-form-icon" uk-icon="icon: user"></span>
-            {{ form.username(class="uk-input") }}
-        </div>
-        <div>
+    <div class="form-group">
+        {{ form.username.label() }}
+        {{ form.username(class="form-control") }}
         {% if form.username.errors %}
             {% for e in form.username.errors %}
-                <span class="uk-text-danger">{{ e }}</span>
+                <small  class="form-text text-muted">{{ e }}</small >
             {% endfor %}
         {% endif %}
-        </div>
     </div>
 
-    <div class="uk-margin">
-        {{ form.password.label(class="uk-form-label") }}
-        <div class="uk-inline">
-            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-            {{ form.password(class="uk-input") }}
-        </div>
-        <div>
+    <div class="form-group">
+        {{ form.password.label() }}
+        {{ form.password(class="form-control") }}
         {% if form.password.errors %}
             {% for e in form.password.errors %}
-                <span class="uk-text-danger">{{ e }}</span>
+                <small class="form-text text-muted">{{ e }}</small>
             {% endfor %}
         {% endif %}
-        </div>
     </div>
-    <input class="uk-button" type="submit" value="登录">
+    <input class="btn btn-primary" type="submit" value="登录">
     <div>
         没账号<a href="{{ url_for('.register') }}">?去注册</a>
     </div>

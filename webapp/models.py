@@ -37,7 +37,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
 
-    def __init__(self, title):
+    def __init__(self, title=None):
         self.title = title
 
     def __repr__(self):

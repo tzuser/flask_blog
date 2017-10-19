@@ -47,3 +47,7 @@ class RegisterForm(Form):
             return False
         
         return True
+
+class PostForm(Form):
+    title=StringField('Title',[DataRequired(),Length(max=255)])
+    text=TextAreaField('Content',[DataRequired()])

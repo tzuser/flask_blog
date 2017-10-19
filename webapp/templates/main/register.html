@@ -1,54 +1,39 @@
 {% extends "base.html" %}
 {% block title %}注册{% endblock %}
 {% block body %}
-<form method="POST" action="{{ url_for('.register') }}" class="uk-form-stacked">
+<form method="POST" action="{{ url_for('.register') }}" >
     {{ form.hidden_tag() }}
-    <div class="uk-margin">
-        {{ form.username.label(class="uk-form-label") }}
-        <div class="uk-inline">
-            <span class="uk-form-icon" uk-icon="icon: user"></span>
-            {{ form.username(class="uk-input") }}
-        </div>
-        <div>
+    <div class="form-group">
+        {{ form.username.label() }}
+        {{ form.username(class="form-control") }}
         {% if form.username.errors %}
             {% for e in form.username.errors %}
-                <span class="uk-text-danger">{{ e }}</span>
+                <small class="form-text text-muted">{{ e }}</small>
             {% endfor %}
         {% endif %}
-        </div>
     </div>
 
-    <div class="uk-margin">
-        {{ form.password.label(class="uk-form-label") }}
-        <div class="uk-inline">
-            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-            {{ form.password(class="uk-input") }}
-        </div>
-        <div>
+    <div class="form-group">
+        {{ form.password.label() }}
+        {{ form.password(class="form-control") }}
         {% if form.password.errors %}
             {% for e in form.password.errors %}
-                <span class="uk-text-danger">{{ e }}</span>
+                <small class="form-text text-muted">{{ e }}</small>
             {% endfor %}
         {% endif %}
-        </div>
     </div>
 
-    <div class="uk-margin">
-        {{ form.confirm.label(class="uk-form-label") }}
-        <div class="uk-inline">
-            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-            {{ form.confirm(class="uk-input") }}
-        </div>
-        <div>
+    <div class="form-group">
+        {{ form.confirm.label() }}
+        {{ form.confirm(class="form-control") }}
         {% if form.confirm.errors %}
             {% for e in form.confirm.errors %}
-                <span class="uk-text-danger">{{ e }}</span>
+                <small class="form-text text-muted">{{ e }}</small>
             {% endfor %}
         {% endif %}
-        </div>
     </div>
 
-    <input class="uk-button" type="submit" value="注册">
+    <input class="btn btn-primary" type="submit" value="注册">
     <div>
         已有账号<a href="{{ url_for('.login') }}">?去登录</a>
     </div>

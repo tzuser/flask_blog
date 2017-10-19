@@ -1,60 +1,47 @@
 {% extends "base.html" %}
 {% block title %}发表评论{% endblock %}
 {% block body %}
-     <div class="col-lg-12">
-        <article class="uk-article">
-            <h1 class="uk-article-title"><a class="uk-link-reset" href="{{ url_for('.post',post_id=post.id) }}">{{ post.title }}</a></h1>
-            <p class="uk-article-meta">{{ post.publish_date }}</p>
-            <p class="uk-text-lead">
-                {{ post.text | safe }}
-            </p>
-        </article>
-        <hr class="uk-margin-medium">
+     <div >
+        <div >
+            <h2>{{ post.title }}</h2>
+            <small>{{ post.publish_date }}</small>
+            <p>{{ post.text | safe}}</p>
+        </div >
+
+
+        <hr >
 
         <h3>发表评论:</h3>
-        <form method="POST" class="uk-form-stacked" action="{{ url_for('.post',post_id=post.id) }}">
+        <form method="POST" action="{{ url_for('.post',post_id=post.id) }}">
             {{ form.hidden_tag() }}
-            <div class="uk-margin-small">
-                {{ form.name.label(class_='uk-form-label') }}
+            <div class="form-group">
+                {{ form.name.label() }}
+                {{ form.name(class="form-control") }}
                 {% if form.name.errors %}
                     {% for e in form.name.errors %}
-                        <p class="help-block">{{ e }}</p>
+                        <small  class="form-text text-muted">{{ e }}</small >
                     {% endfor %}
                 {% endif %}
-                {{ form.name(class_='uk-input') }}
             </div>
-            <div class="uk-margin-small">
-                {{ form.text.label(class_='uk-form-label') }}
+            <div class="form-group">
+                {{ form.text.label() }}
+                {{ form.text(class="form-control") }}
                 {% if form.text.errors %}
                     {% for e in form.text.errors %}
-                        <p class="help-block">{{ e }}</p>
+                        <small  class="form-text text-muted">{{ e }}</small >
                     {% endfor %}
                 {% endif %}
-                {{ form.text(class_='uk-textarea',rows=5) }}
             </div>
-            <input class="uk-button" type="submit" value="评论">
+
+            <input class="btn btn-primary" type="submit" value="评论">
         </form>
-        <hr class="uk-margin-medium">
-        <ul class="uk-comment-list uk-margin-medium">
+        <hr >
         {% for item in comments %}
-            <li>
-                <article class="uk-comment uk-visible-toggle">
-                    <header class="uk-comment-header uk-position-relative">
-                        <div class="uk-grid-medium uk-flex-middle uk-grid" uk-grid="">
-                            <div class="uk-width-expand">
-                                <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">{{ item.name }}</a></h4>
-                                <p class="uk-comment-meta uk-margin-remove-top"><a class="uk-link-reset" href="#">{{ item.date }}</a></p>
-                            </div>
-                        </div>
-                        <div class="uk-position-top-right uk-position-small uk-hidden-hover"><a class="uk-button uk-button-text" href="#">Reply</a></div>
-                    </header>
-                    <div class="uk-comment-body">
-                        <p style="word-break:break-all">{{ item.text }}</p>
-                    </div>
-                </article>
-            </li>
+                <div class="well">
+                    <div>{{ item.name }}{{ item.date }}</div>
+                    <div>{{ item.text }}</div>
+                </div>
         {% endfor %}
-        </ul>
     </div>
 {% endblock %}
 
