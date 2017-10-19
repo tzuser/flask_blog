@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b7203fc-1eee-4469-aaa4-791c97323752" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/controllers/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/controllers/blog.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/controllers/main.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/article.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/base.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/home.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/post.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database.db" afterPath="$PROJECT_DIR$/database.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/flask.iml" afterPath="$PROJECT_DIR$/.idea/flask.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manger.py" afterPath="$PROJECT_DIR$/manger.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.py" afterPath="$PROJECT_DIR$/server.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/__init__.py" afterPath="$PROJECT_DIR$/webapp/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/config.py" afterPath="$PROJECT_DIR$/webapp/config.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/forms.py" afterPath="$PROJECT_DIR$/webapp/forms.py" />
-    </list>
+    <list default="true" id="0b7203fc-1eee-4469-aaa4-791c97323752" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -367,7 +349,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32535365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32535365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25799572" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
