@@ -17,13 +17,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ url_for('blog.home') }}">首页 <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{{ url_for('blog.new') }}">发布</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <a class="nav-link" href="{{ url_for('main.logout') }}">注销</a>
               </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -32,8 +32,9 @@
             </form>
         </div>
     </header>
+
 <div class="container-fluid">
-    <div class="bd-content">
+    <div class="bd-content col-12 col-md-9 col-xl-8 py-md-3 pl-md-5" >
         {% with messages=get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category,message in messages %}
@@ -43,12 +44,12 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+        {% block body %}
+        {% endblock %}
     </div>
-
-    {% block body %}
-    {% endblock %}
-    {% block js %}
-    {% endblock %}
 </div>
+
+{% block js %}
+{% endblock %}
 </body>
 </html>

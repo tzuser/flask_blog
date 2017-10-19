@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, session, g, abort, Bluepri
 from webapp.forms import CommentForm, PostForm
 from webapp.models import db, User, Post, Tag, Comment, tags
 from sqlalchemy import func
+from flask_login import login_required
 
 import datetime
 
@@ -22,10 +23,10 @@ blog_blueprint = Blueprint(
 )
 
 
-@blog_blueprint.before_request
-def before_request():
-    if 'user_id' in session:
-        g.user = User.query.get(session['user_id'])
+# @blog_blueprint.before_request
+# def before_request():
+#     if 'user_id' in session:
+#         g.user = User.query.get(session['user_id'])
 
 
 @blog_blueprint.errorhandler(404)
@@ -47,6 +48,7 @@ def admin():
 
 
 @blog_blueprint.route('/new', methods=('GET', 'POST'))
+@login_required
 def new():
     form = PostForm()
     if form.validate_on_submit():

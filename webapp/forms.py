@@ -1,8 +1,7 @@
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, PasswordField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from webapp.models import User
-
 
 class CommentForm(Form):
     LANGUAGES = ['zh']
@@ -16,7 +15,7 @@ class CommentForm(Form):
 class LoginForm(Form):
     username = StringField(u'用户名', [DataRequired(), Length(max=255)])
     password = PasswordField(u'密码', [DataRequired()])
-
+    remember = BooleanField(u'记住我')
     def validate(self):
         check_validate = super(LoginForm, self).validate()
         if not check_validate:
@@ -51,3 +50,6 @@ class RegisterForm(Form):
 class PostForm(Form):
     title=StringField('Title',[DataRequired(),Length(max=255)])
     text=TextAreaField('Content',[DataRequired()])
+
+class OpenIDForm(Form):
+    openid=StringField('OpenID URL',[DataRequired(),URL()])
