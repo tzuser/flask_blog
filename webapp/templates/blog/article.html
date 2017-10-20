@@ -1,9 +1,8 @@
 {%  macro article(post) %}
 <div >
     <h2>{{ post.title }}</h2>
-    <small>{{ post.publish_date }}</small>
+    <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
     <p>{{ post.text | safe }}</p>
-    <p><a class="uk-button uk-button-text" href="{{ url_for('.post',post_id=post.id) }}">查看</a></p>
 </div >
 {% endmacro %}
 
@@ -16,7 +15,7 @@
 {%  macro articleItem(post) %}
 <div >
     <h2>{{ post.title }}</h2>
-    <small>{{ post.publish_date }}</small>
+    <small>{{ post.user.username }} 发布于：{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
     <p>{{ post.text | safe | truncate(200)}}</p>
     <p><a class="uk-button uk-button-text" href="{{ url_for('.post',post_id=post.id) }}">查看</a></p>
 </div >

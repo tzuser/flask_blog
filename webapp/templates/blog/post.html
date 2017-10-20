@@ -1,19 +1,10 @@
+{% import 'article.html' as article %}
 {% extends "blog/base.html" %}
 {% block title %}发表评论{% endblock %}
 {% block body %}
      <div >
-        <div >
-            <h2>{{ post.title }}</h2>
-            {% if current_user==post.user %}
-                <a href="{{ url_for('.edit',id=post.id) }}">编辑</a>
-            {% endif %}
-            <small>{{ post.publish_date }}</small>
-            <p>{{ post.text | safe}}</p>
-        </div >
-
-
+        {{ article.article(post) }}
         <hr >
-
         <h3>发表评论:</h3>
         <form method="POST" action="{{ url_for('.post',post_id=post.id) }}">
             {{ form.hidden_tag() }}
@@ -26,6 +17,7 @@
                     {% endfor %}
                 {% endif %}
             </div>
+
             <div class="form-group">
                 {{ form.text.label() }}
                 {{ form.text(class="form-control") }}
@@ -41,7 +33,7 @@
         <hr >
         {% for item in comments %}
                 <div class="well">
-                    <div>{{ item.name }}{{ item.date }}</div>
+                    <div>{{ item.name }} {{ item.date.strftime('%Y-%m-%d %H:%M:%S') }}</div>
                     <div>{{ item.text }}</div>
                 </div>
         {% endfor %}

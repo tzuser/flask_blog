@@ -49,6 +49,7 @@ class RegisterForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title=StringField('Title',[DataRequired(),Length(max=255)])
+    tags=StringField('Tags')
     text=TextAreaField('Content',[DataRequired()])
 
 class OpenIDForm(FlaskForm):

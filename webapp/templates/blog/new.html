@@ -13,6 +13,15 @@
             {% endif %}
         </div>
         <div class="form-group">
+            {{ form.tags.label() }}
+            {{ form.tags(class="form-control") }}
+            {% if form.tags.errors %}
+                {% for e in form.tags.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
             {{ form.text.label() }}
             {{ form.text(id='editor',class="form-control",rows=5) }}
             {% if form.text.errors %}
