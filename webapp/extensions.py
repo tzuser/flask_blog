@@ -2,7 +2,13 @@ from flask_bcrypt import Bcrypt
 from flask_openid import OpenID
 from flask import flash,redirect,url_for
 from flask_login import LoginManager
+from flask_principal import Principal,Permission,RoleNeed
 
+
+principal=Principal()
+admin_permission=Permission(RoleNeed('admin'))
+poster_permission=Permission(RoleNeed('poster'))
+default_permission=Permission(RoleNeed('default'))
 
 bcrypt=Bcrypt()
 oid=OpenID()

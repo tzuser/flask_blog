@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 {% block title %}编辑{% endblock %}
 {% block body %}
     <form method="post" action="{{ url_for('.edit',id=post.id) }}"  class="uk-form-stacked">

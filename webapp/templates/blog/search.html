@@ -1,0 +1,8 @@
+{% import 'article.html' as article %}
+{% extends "blog/base.html" %}
+{% block title %}搜索{% endblock %}
+{% block body %}
+   {{ article.articleList(posts) }}
+{% endblock %}
+
+

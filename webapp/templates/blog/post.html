@@ -1,9 +1,12 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 {% block title %}发表评论{% endblock %}
 {% block body %}
      <div >
         <div >
             <h2>{{ post.title }}</h2>
+            {% if current_user==post.user %}
+                <a href="{{ url_for('.edit',id=post.id) }}">编辑</a>
+            {% endif %}
             <small>{{ post.publish_date }}</small>
             <p>{{ post.text | safe}}</p>
         </div >

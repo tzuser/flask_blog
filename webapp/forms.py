@@ -1,9 +1,9 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from webapp.models import User
 
-class CommentForm(Form):
+class CommentForm(FlaskForm):
     LANGUAGES = ['zh']
     name = StringField(
         u'昵称',
@@ -12,7 +12,7 @@ class CommentForm(Form):
     text = TextAreaField(u'评论', validators=[DataRequired()])
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     username = StringField(u'用户名', [DataRequired(), Length(max=255)])
     password = PasswordField(u'密码', [DataRequired()])
     remember = BooleanField(u'记住我')
@@ -31,7 +31,7 @@ class LoginForm(Form):
         return True
 
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     username = StringField(u'用户名', [DataRequired(), Length(max=255)])
     password = PasswordField(u'密码', [DataRequired(), Length(min=6)])
     confirm = PasswordField(u'确认密码', [DataRequired(), EqualTo('password')])
@@ -47,9 +47,12 @@ class RegisterForm(Form):
         
         return True
 
-class PostForm(Form):
+class PostForm(FlaskForm):
     title=StringField('Title',[DataRequired(),Length(max=255)])
     text=TextAreaField('Content',[DataRequired()])
 
-class OpenIDForm(Form):
+class OpenIDForm(FlaskForm):
     openid=StringField('OpenID URL',[DataRequired(),URL()])
+
+class SearchForm(FlaskForm):
+    keyword=StringField(u'搜索',[DataRequired(),Length(max=30)])

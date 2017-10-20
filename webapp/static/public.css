@@ -5,3 +5,15 @@
     top: 0;
     z-index: 1071;
 }
+.bd-content{
+    order: 1;
+}
+
+.bd-toc{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    order: 2;
+}
