@@ -3,7 +3,7 @@
 {% block title %}发表评论{% endblock %}
 {% block body %}
      <div >
-        {{ article.article(post) }}
+        {{ article.article(post,is_edit) }}
         <hr >
         <h3>发表评论:</h3>
         <form method="POST" action="{{ url_for('.post',post_id=post.id) }}">
@@ -17,7 +17,6 @@
                     {% endfor %}
                 {% endif %}
             </div>
-
             <div class="form-group">
                 {{ form.text.label() }}
                 {{ form.text(class="form-control") }}

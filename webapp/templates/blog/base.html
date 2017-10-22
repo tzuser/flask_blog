@@ -28,14 +28,22 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('blog.home') }}">首页 <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('blog.home') }}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('blog.list',count=10,page=1) }}">列表</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('blog.new') }}">发布</a>
                 </li>
+                {% if g.is_login %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('blog.new') }}">{{ current_user.username }}</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
-                    {% if current_user.is_active %}
+                    {% if g.is_login %}
                         <a class="nav-link" href="{{ url_for('main.logout') }}">注销</a>
                     {% else %}
                         <a class="nav-link" href="{{ url_for('main.login') }}">登陆</a>

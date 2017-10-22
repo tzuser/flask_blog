@@ -1,14 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField , fields
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from webapp.models import User
 
 class CommentForm(FlaskForm):
     LANGUAGES = ['zh']
-    name = StringField(
-        u'昵称',
-        validators=[DataRequired(), Length(max=255)]
-    )
+    name = StringField(u'昵称',validators=[DataRequired(), Length(max=255)])
     text = TextAreaField(u'评论', validators=[DataRequired()])
 
 
@@ -48,9 +45,11 @@ class RegisterForm(FlaskForm):
         return True
 
 class PostForm(FlaskForm):
-    title=StringField('Title',[DataRequired(),Length(max=255)])
-    tags=StringField('Tags')
-    text=TextAreaField('Content',[DataRequired()])
+    title=StringField('标题',[DataRequired(),Length(max=255)])
+    cover=StringField('封面')
+    tags=StringField('标签')
+    text=TextAreaField('内容',[DataRequired()])
+    photos=fields.FieldList(StringField('图片'))
 
 class OpenIDForm(FlaskForm):
     openid=StringField('OpenID URL',[DataRequired(),URL()])

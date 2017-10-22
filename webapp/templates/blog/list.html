@@ -1,0 +1,23 @@
+{% import 'article.html' as article %}
+{% extends "blog/base.html" %}
+{% block title %}列表{% endblock %}
+{% block body %}
+   {{ article.articleList(page.items) }}
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if not page.has_prev %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('blog.list',page=page.page-1,count=count) }}" tabindex="-1">上一页</a>
+        </li>
+
+        {% for item in range(page.pages) %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('blog.list',page=item+1,count=count) }}">{{ item+1 }}</a></li>
+        {% endfor %}
+        <li class="page-item  {% if not page.has_next %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('blog.list',page=page.page+1,count=count) }}">下一页</a>
+        </li>
+      </ul>
+    </nav>
+{% endblock %}
+
+
