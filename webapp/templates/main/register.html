@@ -14,6 +14,26 @@
     </div>
 
     <div class="form-group">
+        {{ form.nickname.label() }}
+        {{ form.nickname(class="form-control") }}
+        {% if form.nickname.errors %}
+            {% for e in form.nickname.errors %}
+                <small class="form-text text-muted">{{ e }}</small>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.sex.label() }}
+        {{ form.sex(class="form-control") }}
+        {% if form.sex.errors %}
+            {% for e in form.sex.errors %}
+                <small class="form-text text-muted">{{ e }}</small>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="form-group">
         {{ form.password.label() }}
         {{ form.password(class="form-control") }}
         {% if form.password.errors %}

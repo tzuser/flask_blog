@@ -1,0 +1,38 @@
+{% extends "blog/edit_base.html" %}
+{% block content %}
+            <div id="photo_box" style="max-height: 400px;overflow-y: auto">
+
+            </div>
+            {% if form.photos.errors %}
+                {% for e in form.photos.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        <p>
+            <a href="#" class="btn btn-success" onclick="addImg()">添加图片</a>
+    </p>
+
+{% endblock %}
+{% block js %}
+    <script>
+        function addImg(url='') {
+            var box = document.getElementById('photo_box');
+            var list = box.querySelectorAll('.form-group');
+            var len = list.length;
+            var index = len;
+            var item = `<div class="form-group">
+            <label>图片${index + 1}</label>
+            <input class="form-control" name="photos-${index}" value="${url}"/>
+            </div>`
+            var div = document.createElement("div");
+            div.innerHTML = item;
+            box.appendChild(div)
+        }
+        function initImg(list=['']){
+            list.forEach(function(url){
+                addImg(url)
+            })
+        }
+            initImg({{ photos | safe}})
+    </script>
+{% endblock %}

@@ -1,40 +1,102 @@
-{%  macro article(post,is_edit) %}
-<div >
-    <h2>{{ post.title }}</h2>
-    <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
-    {% if is_edit %}
-        <a href="{{ url_for('blog.edit',id=post.id) }}">编辑</a>
+{% macro post(post,is_edit) %}
+    {% if post.type=='photo' %}
+        {{ photo(post,is_edit) }}
+    {% elif post.type=='video' %}
+        {{ video(post,is_edit) }}
+    {% elif post.type=='article' %}
+        {{ article(post,is_edit) }}
     {% endif %}
+{% endmacro %}
+
+{% macro article(post,is_edit) %}
+    <div>
+        <h2>{{ post.title }}</h2>
+        <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
+        {% if is_edit %}
+            <a href="{{ url_for('blog.edit',id=post.id) }}">编辑</a>
+        {% endif %}
+        <p><img src="{{ post.cover }}"></p>
+        <p>{{ post.text | safe }}</p>
+        <div>
+            tag:
+            {% for tag in post.tags %}
+                <a href="{{ url_for('blog.tag',id=tag.id) }}">{{ tag.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro photo(post,is_edit) %}
+    <div>
+        <h2>{{ post.title }}</h2>
+        <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
+        {% if is_edit %}
+            <a href="{{ url_for('blog.edit',id=post.id) }}">编辑</a>
+        {% endif %}
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">{{ post.summary }}</p>
+            </div>
+        </div>
+
+        {% for photo in post.photos %}
+            <img src="{{ photo.url }}">
+        {% endfor %}
+
+        <div>
+            tag:
+            {% for tag in post.tags %}
+                <a href="{{ url_for('blog.tag',id=tag.id) }}">{{ tag.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro video(post,is_edit) %}
+    <div>
     <p><img src="{{ post.cover }}"></p>
-    {% for photo in post.photos %}
-        <img src="{{ photo.url }}">
-    {% endfor %}
-    <p>{{ post.text | safe }}</p>
+    <video src="{{ post.video }}" width="100%" controls="controls"></video>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ post.title }}</h4>
+            <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
+            <p class="card-text">{{ post.summary }}</p>
+
+            {% if is_edit %}
+                <a href="{{ url_for('blog.edit',id=post.id) }}" class="btn btn-primary">编辑</a>
+            {% endif %}
+        </div>
+    </div>
     <div>
     tag:
         {% for tag in post.tags %}
             <a href="{{ url_for('blog.tag',id=tag.id) }}">{{ tag.title }}</a>
         {% endfor %}
     </div>
-</div >
 {% endmacro %}
 
-{%  macro articleList(posts) %}
+{% macro articleList(posts) %}
     <div class="card-columns">
-    {% for post in posts %}
-        {{ articleItem(post) }}
-    {% endfor %}
+        {% for post in posts %}
+            {{ articleItem(post) }}
+        {% endfor %}
     </div>
 {% endmacro %}
 
-{%  macro articleItem(post) %}
-<div class="card">
-  <a href="{{ url_for('.post',post_id=post.id) }}"><img class="card-img-top" src="{{ post.cover }}"></a>
-  <div class="card-body">
-      <h2>{{ post.title }}</h2>
-      <small>{{ post.user.username }} 发布于：{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
-      <p class="card-text">{{ post.text | safe | truncate(200)}}</p>
-      <p><a class="uk-button uk-button-text" href="{{ url_for('.post',post_id=post.id) }}">查看</a></p>
-  </div>
-</div>
+{% macro articleItem(post) %}
+    <div class="card">
+
+        {% if post.type=='photo' and post.cover %}
+            <a href="{{ url_for('.post',post_id=post.id) }}"><img class="card-img-top" src="{{ post.cover }}"></a>
+        {% elif post.type=='video' and post.cover %}
+            <a href="{{ url_for('.post',post_id=post.id) }}"><img class="card-img-top" src="{{ post.cover }}"></a>
+        {% endif %}
+
+        <div class="card-body">
+            <h2>{{ post.title }}</h2>
+            <small>{{ post.user.username }} 发布于：{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+            <p class="card-text">{{ post.text | safe | truncate(200) }}</p>
+            <p><a class="uk-button uk-button-text" href="{{ url_for('.post',post_id=post.id) }}">查看</a></p>
+        </div>
+    </div>
 {% endmacro %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}用户设置{% endblock %}
+{% block body %}
+    <form method="post" action="{{ url_for('main.user_setting') }}"  class="uk-form-stacked">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.nickname.label() }}
+            {{ form.nickname(class="form-control") }}
+            {% if form.nickname.errors %}
+                {% for e in form.nickname.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.head.label() }}
+            {{ form.head(class="form-control") }}
+            {% if form.head.errors %}
+                {% for e in form.head.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.sex.label() }}
+            {{ form.sex(class="form-control") }}
+            {% if form.sex.errors %}
+                {% for e in form.sex.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+
+        <input class="btn btn-primary" type="submit" value="保存" >
+    </form>
+{% endblock %}

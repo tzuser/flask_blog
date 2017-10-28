@@ -1,0 +1,54 @@
+{% extends "blog/base.html" %}
+{% block title %}{{ "编辑" if post else "发布" }}{% endblock %}
+{% block body %}
+    <form method="post"
+            {% if post %}
+          action="{{ url_for('.edit',id=post.id) }}"
+            {% else %}
+          action="{{ url_for('.new',type=type) }}"
+            {% endif %}
+          class="uk-form-stacked">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label() }}
+            {{ form.title(class="form-control") }}
+             {% if form.title.errors %}
+                {% for e in form.title.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.cover.label() }}
+            {{ form.cover(class="form-control") }}
+            {% if form.cover.errors %}
+                {% for e in form.cover.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.tags.label() }}
+            {{ form.tags(class="form-control") }}
+            {% if form.tags.errors %}
+                {% for e in form.tags.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.summary.label() }}
+            {{ form.summary(class="form-control",rows="3") }}
+            {% if form.summary.errors %}
+                {% for e in form.summary.errors %}
+                    <small class="form-text text-muted">{{ e }}</small>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {% block content %}
+        {% endblock %}
+        <input class="btn btn-primary" type="submit" value="发布">
+    </form>
+{% endblock %}

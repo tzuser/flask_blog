@@ -1,0 +1,16 @@
+{% extends "blog/edit_base.html" %}
+
+{% block content %}
+    <div class="form-group">
+        {{ form.video.label() }}
+        {{ form.video(class="form-control") }}
+        {% if form.video.errors %}
+            {% for e in form.video.errors %}
+                <small class="form-text text-muted">{{ e }}</small>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

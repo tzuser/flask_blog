@@ -1,8 +1,8 @@
 from flask import Blueprint, flash, redirect, render_template, url_for,current_app
 from webapp.extensions import oid
-from webapp.forms import LoginForm, RegisterForm,OpenIDForm
+from webapp.forms import LoginForm, RegisterForm,OpenIDForm,UserSettingForm
 from webapp.models import db, User
-from flask_login import login_user,logout_user,login_required
+from flask_login import login_user,logout_user,login_required,current_user
 from flask_principal import (Identity,AnonymousIdentity,identity_changed)
 
 main_blueprint = Blueprint(
@@ -72,6 +72,8 @@ def register():
     if form.validate_on_submit():
         new_user = User()
         new_user.username = form.username.data
+        new_user.nickname = form.nickname.data
+        new_user.sex = form.sex.data
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
@@ -83,3 +85,23 @@ def register():
         flash(openid_errors,category="danger")
 
     return render_template('register.html', form=form , openid_form=openid_form)
+
+
+@main_blueprint.route('/user_setting', methods=['GET', 'POST'])
+@login_required
+def user_setting():
+    form = UserSettingForm()
+    user=current_user
+    if form.validate_on_submit():
+        user.nickname=form.nickname.data
+        user.sex=form.sex.data
+        user.head=form.head.data
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('blog.home'))
+    form.sex.default=user.sex
+    form.process()
+    form.nickname.data=user.nickname
+    form.head.data=user.head
+    return render_template('user_setting.html', form=form )
+
