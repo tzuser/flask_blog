@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, session, g, abort, Blueprint, flash,request
+from flask import render_template, redirect, url_for, session, g, abort, Blueprint, flash, request
 
 from webapp.forms import CommentForm, PostForm, SearchForm
 from webapp.models import db, User, Post, Tag, Comment, tags, Photo
@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from flask_principal import Permission, UserNeed
 from webapp.extensions import poster_permission, admin_permission
 
-import datetime
+from datetime import datetime
 
 
 def sidebar_data():
@@ -54,7 +54,8 @@ def admin():
         abort(403)
     return render_template('admin.html')
 
-@blog_blueprint.route('/new/<string:type>', methods=['GET','POST'])
+
+@blog_blueprint.route('/new/<string:type>', methods=['GET', 'POST'])
 @login_required
 def new(type):
     form = PostForm()
@@ -63,9 +64,10 @@ def new(type):
         new_post.text = form.text.data
         new_post.cover = form.cover.data
         new_post.publish_date = datetime.datetime.now()
+        new_post.update_date = new_post.publish_date
         new_post.user_id = current_user.id
         new_post.type = type
-        new_post.summary= form.summary.data
+        new_post.summary = form.summary.data
         new_post.video = form.video.data
         tagStrList = form.tags.data.split(',')
         for tagStr in tagStrList:
@@ -78,40 +80,13 @@ def new(type):
         for photo_url in form.photos.data:
             if photo_url != '':
                 photo = Photo(photo_url)
-                post.photos.append(photo)
+                new_post.photos.append(photo)
 
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('blog.post', post_id=new_post.id))
     form.type.data = type
-    return render_template("edit_{}.html".format(type) , form=form,type=type)
-
-
-@blog_blueprint.route('/new_post', methods=['POST'])
-def new_post(type):
-    if request.method == 'POST':
-        new_post = Post(request.form['title'])
-        new_post.text = request.form['text']
-        new_post.cover = request.form['cover']
-        new_post.cover_width = request.form['cover_width']
-        new_post.cover_height = request.form['cover_height']
-        new_post.publish_date = datetime.datetime.now()
-        new_post.user_id = request.form['user_id']
-        new_post.type = request.form['type']
-        new_post.summary= request.form['summary']
-        new_post.video = request.form['video']
-        tagStrList = request.form['tags'].split(',')
-        for tagStr in tagStrList:
-            tagStr = tagStr.strip()
-            tag = Tag.query.filter_by(title=tagStr).first()
-            if not tag:
-                tag = Tag(tagStr)
-            new_post.tags.append(tag)
-
-
-        db.session.add(new_post)
-        db.session.commit()
-        return redirect(url_for('blog.post', post_id=new_post.id))
+    return render_template("edit_{}.html".format(type), form=form, type=type)
 
 @blog_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -127,7 +102,7 @@ def edit(id):
             post.video = form.video.data
             post.summary = form.summary.data
             post.text = form.text.data
-            post.publish_date = datetime.datetime.now()
+            post.update_date = datetime.now()
             del post.tags[:]  # 删除所有标签
             del post.photos[:]  # 删除所有图片
 
@@ -148,20 +123,20 @@ def edit(id):
             db.session.add(post)
             db.session.commit()
             return redirect(url_for('.post', post_id=post.id))
-        type=post.type
+        type = post.type
         form.cover.data = post.cover
         form.text.data = post.text
         form.title.data = post.title
         form.summary.data = post.summary
         form.type.data = type
-        photos=[photo.url for photo in post.photos]
+        photos = [photo.url for photo in post.photos]
         form.summary.data = post.summary
         tags = []
         for tag in post.tags:
             tags.append(tag.title)
         form.tags.data = ','.join(tags)
 
-        return render_template("edit_{}.html".format(type) , form=form, post=post , photos=photos)
+        return render_template("edit_{}.html".format(type), form=form, post=post, photos=photos)
     abort(403)
 
 
@@ -173,7 +148,7 @@ def post(post_id):
         new_comment.name = form.name.data
         new_comment.text = form.text.data
         new_comment.post_id = post_id
-        new_comment.date = datetime.datetime.now()
+        new_comment.date = datetime.now()
         db.session.add(new_comment)
         db.session.commit()
         return redirect(url_for('.post', post_id=post_id))
@@ -214,7 +189,10 @@ def tag(id):
     return render_template('search.html', posts=posts)
 
 
-@blog_blueprint.route('/list/<int:count>/<int:page>', methods=['GET'])
-def list(count, page):
-    pageData = Post.query.order_by(Post.publish_date.desc()).paginate(page, count)
-    return render_template('list.html', page=pageData, count=count)
+@blog_blueprint.route('/list/<string:type>/<string:order>/<int:count>/<int:page>', methods=['GET'])
+def list(type, order, count, page):
+    if type=="all":
+        pageData = Post.query.order_by(getattr(Post, order).desc()).paginate(page, count)
+    else:
+        pageData = Post.query.order_by(getattr(Post,order).desc()).filter_by(type=type).paginate(page, count)
+    return render_template('list.html', type=type,order=order,page=pageData, count=count)

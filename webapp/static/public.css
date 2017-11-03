@@ -8,7 +8,9 @@
 .bd-content{
     order: 1;
 }
-
+.bd-content img{
+    max-width: 100%;
+}
 .bd-toc{
     position: -webkit-sticky;
     position: sticky;

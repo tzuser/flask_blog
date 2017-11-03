@@ -54,7 +54,6 @@
 
 {% macro video(post,is_edit) %}
     <div>
-    <p><img src="{{ post.cover }}"></p>
     <video src="{{ post.video }}" width="100%" controls="controls"></video>
     <div class="card">
         <div class="card-body">
@@ -74,6 +73,7 @@
         {% endfor %}
     </div>
 {% endmacro %}
+
 
 {% macro articleList(posts) %}
     <div class="card-columns">
@@ -95,7 +95,7 @@
         <div class="card-body">
             <h2>{{ post.title }}</h2>
             <small>{{ post.user.username }} 发布于：{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
-            <p class="card-text">{{ post.text | safe | truncate(200) }}</p>
+            <p class="card-text">{{ post.summary | safe | truncate(200) }}</p>
             <p><a class="uk-button uk-button-text" href="{{ url_for('.post',post_id=post.id) }}">查看</a></p>
         </div>
     </div>

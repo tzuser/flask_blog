@@ -70,6 +70,8 @@ class Post(db.Model):
     read = db.Column(db.Integer(), default=0)
     video = db.Column(db.String(255))
     publish_date = db.Column(db.DateTime())
+    update_date = db.Column(db.DateTime())
+    post_hash = db.Column(db.String(255))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
@@ -128,3 +130,12 @@ class Role(db.Model):
 
     def __repr__(self):
         return '<Role {}>'.format(self.name)
+
+class Download(db.Model):
+    id=db.Column(db.Integer(),primary_key=True)
+    hash = db.Column(db.String(255))
+    url=db.Column(db.String(255))
+    path=db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Download {}>'.format(self.hash)
