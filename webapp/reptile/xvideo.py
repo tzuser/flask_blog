@@ -1,8 +1,8 @@
 import requests, time, re
 from reptileBase import md5, download, downloadFile, postData, add_download, is_download, is_post
 from requests.adapters import HTTPAdapter
-
 from lxml import html
+from sys import argv
 
 s = requests.Session()
 s.mount('http://', HTTPAdapter(max_retries=3))
@@ -85,4 +85,7 @@ def start(name, page, typeKey=0):
         start(name, page + 1, typeKey)
 
 #yui-hatano-1
-start(name='yuuri-himeno', page=0, typeKey=0)
+if __name__=="__main__":
+	name=argv[1]
+	typeKey=int(argv[2])
+	start(name=name, page=0, typeKey=typeKey)
