@@ -27,6 +27,8 @@ def new_post():
         user = User.query.filter_by(username=data['username']).first()  # 获取用户
         if not user:
             user = User(data['username'])
+            if hasattr(data,'nickname'):
+                user.nickname=data['nickname']
         new_post.user = user  # 用户
         new_post.type = data['type']  # 类型
         new_post.summary = data['summary']  # 简介

@@ -1,0 +1,59 @@
+{% import 'article.html' as article %}
+{% extends "blog/base.html" %}
+{% block title %}列表{% endblock %}
+{% block body %}
+    <img src="{{ user.head }}">
+    <h2>{{ user.nickname or user.username }}</h2>
+    <ul class="nav nav-pills">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">排序</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order='read',type=type,page=1,count=count) }}">热度</a>
+          <a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order='update_date',type=type,page=1,count=count) }}">更新</a>
+          <a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order='publish_date',type=type,page=1,count=count) }}">发布</a>
+        </div>
+      </li>
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">类型</a>
+        <div class="dropdown-menu">
+        	<a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type='all',page=1,count=count) }}">全部</a>
+          <a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type='video',page=1,count=count) }}">视频</a>
+          <a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type='photo',page=1,count=count) }}">图片</a>
+          <a class="dropdown-item" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type='article',page=1,count=count) }}">文章</a>
+        </div>
+      </li>
+    </ul>
+    <div class="mt-2 mb-3">
+        {{ article.articleList(page.items) }}
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if not page.has_prev %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type=type,page=page.page-1,count=count) }}" tabindex="-1"><</a>
+        </li>
+        {% if page.pages>7 %}
+            {% if page.page>2 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type=type,page=1,count=count) }}">{{ 1 }}</a></li>
+            {% endif %}
+            {% for i in [-1,0,1] %}
+                {% if page.page+i<=page.pages and page.page+i>=1 %}
+                    <li class="page-item {% if page.page+i==page.page %}active{% endif %}"><a class="page-link" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type=type,page=page.page+i,count=count) }}">{{ page.page+i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page.page<page.pages-1 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type=type,page=page.pages,count=count) }}">{{ page.pages }}</a></li>
+            {% endif %}
+        {% else %}
+            {% for item in range(page.pages) %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type=type,page=item+1,count=count) }}">{{ item+1 }}</a></li>
+            {% endfor %}
+        {% endif %}
+        <li class="page-item  {% if not page.has_next %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('blog.user_posts',userid=user.id,order=order,type=type,page=page.page+1,count=count) }}">></a>
+        </li>
+      </ul>
+    </nav>
+
+{% endblock %}
+
+

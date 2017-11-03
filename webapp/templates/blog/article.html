@@ -11,7 +11,7 @@
 {% macro article(post,is_edit) %}
     <div>
         <h2>{{ post.title }}</h2>
-        <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
+        <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ userLink(post.user.id,post.user.username) }}</small>
         {% if is_edit %}
             <a href="{{ url_for('blog.edit',id=post.id) }}">编辑</a>
         {% endif %}
@@ -29,7 +29,7 @@
 {% macro photo(post,is_edit) %}
     <div>
         <h2>{{ post.title }}</h2>
-        <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
+        <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ userLink(post.user.id,post.user.username) }}</small>
         {% if is_edit %}
             <a href="{{ url_for('blog.edit',id=post.id) }}">编辑</a>
         {% endif %}
@@ -58,7 +58,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">{{ post.title }}</h4>
-            <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ post.user.username }}</small>
+            <small>{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }} {{ userLink(post.user.id,post.user.username) }}</small>
             <p class="card-text">{{ post.summary }}</p>
 
             {% if is_edit %}
@@ -94,9 +94,15 @@
 
         <div class="card-body">
             <h2>{{ post.title }}</h2>
-            <small>{{ post.user.username }} 发布于：{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+            <small>
+                {{ userLink(post.user.id,post.user.username) }}
+                发布于：{{ post.publish_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
             <p class="card-text">{{ post.summary | safe | truncate(200) }}</p>
             <p><a class="uk-button uk-button-text" href="{{ url_for('.post',post_id=post.id) }}">查看</a></p>
         </div>
     </div>
+{% endmacro %}
+
+{% macro userLink(userid,username) %}
+    <a href="{{ url_for('blog.user_posts',userid=userid,type='all',order='publish_date',count=10,page=1) }}">{{ username }}</a>
 {% endmacro %}

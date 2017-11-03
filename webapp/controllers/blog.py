@@ -8,7 +8,7 @@ from flask_principal import Permission, UserNeed
 from webapp.extensions import poster_permission, admin_permission
 
 from datetime import datetime
-
+from sqlalchemy.sql import or_
 
 def sidebar_data():
     recent = Post.query.order_by(Post.publish_date.desc()).limit(5).all()
@@ -63,7 +63,7 @@ def new(type):
         new_post = Post(form.title.data)
         new_post.text = form.text.data
         new_post.cover = form.cover.data
-        new_post.publish_date = datetime.datetime.now()
+        new_post.publish_date = datetime.now()
         new_post.update_date = new_post.publish_date
         new_post.user_id = current_user.id
         new_post.type = type
@@ -196,3 +196,12 @@ def list(type, order, count, page):
     else:
         pageData = Post.query.order_by(getattr(Post,order).desc()).filter_by(type=type).paginate(page, count)
     return render_template('list.html', type=type,order=order,page=pageData, count=count)
+
+@blog_blueprint.route('/user_posts/<int:userid>/<string:type>/<string:order>/<int:count>/<int:page>', methods=['GET'])
+def user_posts(userid,type, order, count, page):
+    if type=="all":
+        pageData = Post.query.order_by(getattr(Post, order).desc()).filter(Post.user_id==userid).paginate(page, count)
+    else:
+        pageData = Post.query.order_by(getattr(Post,order).desc()).filter(Post.type==type,Post.user_id==userid).paginate(page, count)
+    user=User.query.filter_by(id=userid).first()
+    return render_template('user_posts.html', type=type,order=order,page=pageData, count=count ,user=user)

@@ -134,7 +134,7 @@ class Role(db.Model):
 class Download(db.Model):
     id=db.Column(db.Integer(),primary_key=True)
     hash = db.Column(db.String(255))
-    url=db.Column(db.String(255))
+    url=db.Column(db.String(500))
     path=db.Column(db.String(255))
 
     def __repr__(self):

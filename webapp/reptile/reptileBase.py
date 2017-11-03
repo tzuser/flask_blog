@@ -45,7 +45,7 @@ def download(uid, pid, url, name=None):
     return postPath
 
 
-def postData(title, type, summary, publish_date, cover, username, read, tags,post_hash, text='', video='', photos=[]):
+def postData(title, type, summary, publish_date, cover, username, read, tags,post_hash, nickname='',text='', video='', photos=[]):
     data = {
         'title': title,
         'type': type,
@@ -53,13 +53,14 @@ def postData(title, type, summary, publish_date, cover, username, read, tags,pos
         'cover': cover,
         'publish_date': publish_date,
         'username': username,
+        'nickname': nickname,
         'text': text,
         'video': video,
         'read': read,
         'tags': tags,
         'photos': photos,
         'post_hash':post_hash,
-        'key': reptile_key
+        'key': reptile_key,
     }
     r = requests.post('http://localhost:5000/reptile/new_post', data=json.dumps(data))
     resData=r.json()
