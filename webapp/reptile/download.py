@@ -23,7 +23,6 @@ def getHeaders(url):
     return (filesize,type,lastModified)
 
 def download_block(fd, url,path, start, end,onDownload=None):
-    print(start,end)
     try:
         with requests.get(url, headers={'Range': f'bytes={start}-{end}'}, timeout=1*64, stream=False) as response:  # 6分钟
             if mutex.acquire():

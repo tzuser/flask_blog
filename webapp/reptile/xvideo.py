@@ -70,6 +70,9 @@ def start(name, page, typeKey=0):
 
     tree = html.fromstring(htmlStr)
     page_a_list = tree.xpath('//li[last()]/a/text()')
+    if page_a_list[0] == "Next":
+        print('存在更多页面')
+        page_a_list = tree.xpath('//li[last()-1]/a/text()')
     script_list = tree.xpath('//script/text()')
     a_list = tree.xpath('//div[@class="thumb-block "]/p/a[1]')
     href_list = [a.get('href') for a in a_list]
@@ -80,7 +83,7 @@ def start(name, page, typeKey=0):
     for href in href_list:
         uid=name
         getVideo(f'https://www.xvideos.com{href}',name)
-    print(f'当前页{page}下载完成')
+    print(f'当前页{page}/{pages}下载完成')
     if page < pages:
         start(name, page + 1, typeKey)
 
