@@ -44,7 +44,7 @@ def page_not_found(error):
 
 @blog_blueprint.route('/home')
 def home():
-    posts = Post.query.order_by(Post.publish_date.desc()).limit(20).all()
+    posts = Post.query.order_by(Post.publish_date.desc()).filter(Post.status==0).limit(20).all()
     return render_template('home.html', posts=posts)
 
 
@@ -177,7 +177,7 @@ def post(post_id):
 def search():
     form = g.search_form
     if form.validate_on_submit():
-        posts = Post.query.filter(Post.title.ilike("%{}%".format(form.keyword.data))).all()
+        posts = Post.query.filter(Post.status==0,Post.title.ilike("%{}%".format(form.keyword.data))).all()
         return render_template('search.html', posts=posts)
     return redirect(url_for('blog.home'))
 
@@ -185,23 +185,23 @@ def search():
 @blog_blueprint.route('/tag/<int:id>', methods=['GET'])
 def tag(id):
     tag = Tag.query.get_or_404(id)
-    posts = tag.posts.all()
+    posts = tag.posts.filter(Post.status==0).all()
     return render_template('search.html', posts=posts)
 
 
 @blog_blueprint.route('/list/<string:type>/<string:order>/<int:count>/<int:page>', methods=['GET'])
 def list(type, order, count, page):
     if type=="all":
-        pageData = Post.query.order_by(getattr(Post, order).desc()).paginate(page, count)
+        pageData = Post.query.order_by(getattr(Post, order).desc()).filter(Post.status==0).paginate(page, count)
     else:
-        pageData = Post.query.order_by(getattr(Post,order).desc()).filter_by(type=type).paginate(page, count)
+        pageData = Post.query.order_by(getattr(Post,order).desc()).filter(Post.status==0,Post.type==type).paginate(page, count)
     return render_template('list.html', type=type,order=order,page=pageData, count=count)
 
 @blog_blueprint.route('/user_posts/<int:userid>/<string:type>/<string:order>/<int:count>/<int:page>', methods=['GET'])
 def user_posts(userid,type, order, count, page):
     if type=="all":
-        pageData = Post.query.order_by(getattr(Post, order).desc()).filter(Post.user_id==userid).paginate(page, count)
+        pageData = Post.query.order_by(getattr(Post, order).desc()).filter(Post.status==0,Post.user_id==userid).paginate(page, count)
     else:
-        pageData = Post.query.order_by(getattr(Post,order).desc()).filter(Post.type==type,Post.user_id==userid).paginate(page, count)
+        pageData = Post.query.order_by(getattr(Post,order).desc()).filter(Post.status==0,Post.type==type,Post.user_id==userid).paginate(page, count)
     user=User.query.filter_by(id=userid).first()
     return render_template('user_posts.html', type=type,order=order,page=pageData, count=count ,user=user)

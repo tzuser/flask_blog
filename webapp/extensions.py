@@ -3,7 +3,7 @@ from flask_openid import OpenID
 from flask import flash,redirect,url_for
 from flask_login import LoginManager
 from flask_principal import Principal,Permission,RoleNeed
-
+from flask_restful import Api
 
 principal=Principal()
 admin_permission=Permission(RoleNeed('admin'))
@@ -18,6 +18,8 @@ login_manager.login_view="main.login"
 login_manager.session_protection="strong"
 login_manager.login_message=u"请登录访问此页面"
 login_manager.login_message_category="info"
+
+rest_api = Api()
 
 @login_manager.user_loader
 def load_user(userid):

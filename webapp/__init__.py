@@ -1,13 +1,14 @@
 from flask import Flask,redirect,url_for,g
-from webapp.config import DevConfig
-from webapp.extensions import bcrypt,oid,login_manager,principal
-from webapp.models import db,User,Post,Tag,Comment,tags
-from webapp.controllers.blog import blog_blueprint
-from webapp.controllers.main import main_blueprint
-from webapp.controllers.reptile import reptile_blueprint
+from .config import DevConfig
+from .extensions import bcrypt,oid,login_manager,principal,rest_api
+from .models import db,User,Post,Tag,Comment,tags
+from .controllers.blog import blog_blueprint
+from .controllers.main import main_blueprint
+from .controllers.reptile import reptile_blueprint
 from flask_login import current_user
 from flask_principal import identity_loaded,UserNeed,RoleNeed
-
+from .controllers.rest.post import PostApi
+from .controllers.rest.auth import AuthApi
 
 def create_app(object_name):
     app = Flask(__name__)
@@ -18,6 +19,11 @@ def create_app(object_name):
     oid.init_app(app)
     login_manager.init_app(app)
     principal.init_app(app)
+
+    # RESTapi
+    rest_api.add_resource(PostApi, '/api/post','/api/post/<int:post_id>',endpoint='api')
+    rest_api.add_resource(AuthApi, '/api/auth')
+    rest_api.init_app(app)
 
     @identity_loaded.connect_via(app)
     def on_identity_loaded(sender,identity):
