@@ -9,10 +9,14 @@ from flask_login import current_user
 from flask_principal import identity_loaded,UserNeed,RoleNeed
 from .controllers.rest.post import PostApi
 from .controllers.rest.auth import AuthApi
+#跨域
+from flask_cors import CORS
 
 def create_app(object_name):
     app = Flask(__name__)
     app.config.from_object(object_name)
+    #跨域
+    CORS(app, supports_credentials=True)
 
     db.init_app(app)
     bcrypt.init_app(app)

@@ -20,3 +20,6 @@ post_get_parser.add_argument(
 user_post_parser=reqparse.RequestParser()
 user_post_parser.add_argument('username',type=str,required=True)
 user_post_parser.add_argument('password',type=str,required=True)
+
+user_get_parser=reqparse.RequestParser()
+user_get_parser.add_argument('token',type=str,required=True)

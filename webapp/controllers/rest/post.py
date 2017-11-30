@@ -2,6 +2,11 @@ from flask_restful import Resource,fields,marshal_with
 from flask import abort
 from webapp.models import Post,User
 from .parsers import post_get_parser
+role_fields={
+    'id': fields.Integer(),
+    'name': fields.String(),
+    'description':fields.String()
+}
 
 user_fields={
     'id':fields.Integer(),
@@ -9,6 +14,7 @@ user_fields={
     'nickname':fields.String(),
     'head':fields.String(),
     'sex':fields.Integer(),
+    'roles':fields.List(fields.Nested(role_fields)),
 }
 
 tag_fields={
