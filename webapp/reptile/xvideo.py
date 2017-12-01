@@ -37,7 +37,7 @@ def getVideo(url,uid):
         print('未找到视频')
         return False
     video = matchObj.group(1)  # 视频地址
-
+    print(f'{title[0:20]}')
     cover = ''
     matchObj = re.match(r'.*setThumbUrl169\(\'(.*?)\'.*', htmlStr, re.S | re.I)
     if matchObj:

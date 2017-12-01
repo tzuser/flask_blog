@@ -19,7 +19,7 @@ def showSpeed(list):
         elif i==2:
             symbol = '☯'
         showStr += symbol
-    print('[{}] {}/{}\r'.format(showStr,didIndex,listLen), end=' ')
+    print(f'\r[{showStr}] {didIndex}/{listLen}', end=' ')
 #获取文件信息
 def getHeaders(url):
     try:
@@ -71,7 +71,7 @@ def download(url,path,thread_num=20):
     tempf = open(path, 'w')
     tempf.close()
     file_mb=round(filesize/1024/1024,3)#计算文件大小mb
-    print(f'开始下载[{file_mb}Mb]:{url}')
+    print(f'开始下载[{file_mb}Mb]')
     start=0
     end=-1
 
