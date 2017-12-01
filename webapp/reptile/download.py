@@ -1,5 +1,4 @@
-import requests,os,threading,math,time
-from tqdm import tqdm
+import requests,os,threading,time
 from requests.adapters import HTTPAdapter
 s = requests.Session()
 s.mount('http://', HTTPAdapter(max_retries=3))
@@ -7,6 +6,20 @@ s.mount('https://', HTTPAdapter(max_retries=3))
 
 mutex=threading.Lock()
 
+showList=[]
+def showSpeed(list):
+    showStr = ""
+    listLen=len(list)
+    didIndex=0
+    for i in list:
+        symbol='░'
+        if i==1:
+            didIndex+=1
+            symbol='█'
+        elif i==2:
+            symbol = '☯'
+        showStr += symbol
+    print('[{}] {}/{}\r'.format(showStr,didIndex,listLen), end=' ')
 #获取文件信息
 def getHeaders(url):
     try:
@@ -20,7 +33,8 @@ def getHeaders(url):
     lastModified = '' #r.headers['Last-Modified']
     return (filesize,type,lastModified)
 
-def download_block(fd, url,path, start, end,onDownload=None):
+def download_block(fd, url,path, start, end , block_index):
+    global showList
     try:
         with requests.get(url, headers={'Range': f'bytes={start}-{end}'}, timeout=1*64, stream=False) as response:  # 6分钟
             if mutex.acquire():
@@ -28,18 +42,18 @@ def download_block(fd, url,path, start, end,onDownload=None):
                 fd.write(response.content)
                 mutex.release()
     except Exception as e:
-        print("{}-{}重新下载 {}".format(start,end,e))
         time.sleep(1)
+        showList[block_index] = 2
+        showSpeed(showList)
         #重新下载
-        return download_block(fd, url,path, start, end,onDownload)
-    try:
-        # 调用下载事件
-        if onDownload:
-            onDownload(end - start)
-    except RuntimeError as e:
-        print('更新进度条失败')
+        return download_block(fd, url,path, start, end , block_index)
+    #更新进度条
+    showList[block_index]=1
+    showSpeed(showList)
+
 #下载文件
 def download(url,path,thread_num=20):
+    global showList
     download_size=0
     data=getHeaders(url)
     if not data:
@@ -48,10 +62,8 @@ def download(url,path,thread_num=20):
     (filesize, type, lastModified)=data
     if filesize < 2*1024*1024:
         thread_num=1
-
+    showList=[0 for i in range(thread_num+1)]
     threads=[]#线程池
-    # 信号量，同时只允许3个线程运行
-    #threading.BoundedSemaphore(thread_num)
 
     block_size=filesize // thread_num
 
@@ -62,15 +74,11 @@ def download(url,path,thread_num=20):
     print(f'开始下载[{file_mb}Mb]:{url}')
     start=0
     end=-1
-    #进度条
 
-    try:
-        pbar = tqdm(total=filesize)
-    except RuntimeError as e:
-        print('更新进度条失败')
-
+    showSpeed(showList)
     with open(path, 'rb+') as  f:
         fileno=f.fileno()
+        block_index = 0
         while end < filesize - 1:
             start = end + 1
             end = start + block_size - 1
@@ -78,11 +86,14 @@ def download(url,path,thread_num=20):
                 end = filesize
             dup = os.dup(fileno)
             fd = os.fdopen(dup, 'rb+', -1)
-            t = threading.Thread(target=download_block, args=(fd, url,path, start, end,pbar.update))
-            t.start()
+            t = threading.Thread(target=download_block, args=(fd, url,path, start, end ,block_index))
             threads.append(t)
+            t.start()
+            block_index =block_index+1
+
         for t in threads:
             t.join()
     return True
 
-#download('https://vtt.tumblr.com/tumblr_obuv4sZh0w1rssthv_r1.mp4','./test.mp4')
+if __name__ == '__main__':
+    download('https://vtt.tumblr.com/tumblr_obuv4sZh0w1rssthv_r1.mp4','./test.mp4')
