@@ -60,9 +60,10 @@ def download(url,path,thread_num=20):
         print('下载文件失败')
         return False
     (filesize, type, lastModified)=data
+    showList=[0 for i in range(thread_num+1)]
     if filesize < 2*1024*1024:
         thread_num=1
-    showList=[0 for i in range(thread_num+1)]
+        showList=[0]
     threads=[]#线程池
 
     block_size=filesize // thread_num
