@@ -19,7 +19,8 @@ def showSpeed(list):
         elif i==2:
             symbol = '☯'
         showStr += symbol
-    print(f'\r[{showStr}] {didIndex}/{listLen}', end=' ')
+    endStr='\n' if didIndex==listLen else ""
+    print(f'\r[{showStr}] {didIndex}/{listLen}', end=endStr)
 #获取文件信息
 def getHeaders(url):
     try:
