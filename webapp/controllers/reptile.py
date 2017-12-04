@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, session, g, abort, Blueprint, flash, request
 from webapp.models import db, User, Post, Tag, Comment, tags, Photo,Download
-import json, time
+import json, time,os
 import datetime
 from sqlalchemy.sql import or_
 import urllib
@@ -86,3 +86,16 @@ def is_download():
         if not dl:
             return json.dumps({'status':1})
         return json.dumps({'status': 0, 'path': dl.path})
+
+@reptile_blueprint.route('/upload', methods=['POST'])
+def uploaduploadupload():
+    file = request.files['file']
+    filename=request.form.get('filename')
+    path=f"./webapp{filename[0:filename.rfind('/')+1]}"
+    name=filename[filename.rfind('/')+1:]
+    # 创建下载目录
+    if not os.path.exists(path):
+        os.makedirs(path)
+    savePath=f"{path}{name}"
+    file.save(savePath)
+    return  json.dumps({'status': 0, 'message':'上传成功!','path':savePath})

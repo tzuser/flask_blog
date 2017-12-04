@@ -89,5 +89,6 @@ def start(name, page, typeKey=0):
 #yui-hatano-1
 if __name__=="__main__":
 	name=argv[1]
-	typeKey=int(argv[2])
-	start(name=name, page=0, typeKey=typeKey)
+	typeKey = int(argv[2])
+    isUpload = int(argv[3])
+	start(name=name, page=0, typeKey=typeKey,isUpload=isUpload)
