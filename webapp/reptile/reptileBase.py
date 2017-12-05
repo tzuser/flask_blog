@@ -8,7 +8,7 @@ s.mount('http://', HTTPAdapter(max_retries=3))
 s.mount('https://', HTTPAdapter(max_retries=3))
 
 class ReptileBase(object):
-    host='http://localhost:5000/'
+    host='http://localhost:5100/'
     reptile_key='wysj3910'
     isFar=False
     def __init__(self,isFar):

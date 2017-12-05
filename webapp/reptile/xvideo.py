@@ -90,5 +90,5 @@ def start(name, page, typeKey,reptileBase):
 if __name__=="__main__":
     name=argv[1]
     typeKey=int(argv[2])
-    reptileBase=ReptileBase(True)
+    reptileBase=ReptileBase(False)
     start(name=name, page=0, typeKey=typeKey,reptileBase=reptileBase)

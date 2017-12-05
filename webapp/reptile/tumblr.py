@@ -94,6 +94,6 @@ def formatData(data,reptileBase):
 
 #changan-moon
 
-reptileBase=ReptileBase(True)
+reptileBase=ReptileBase(False)
 start('carry9109', 10, 0,reptileBase)
 #carry9109已转发riena-blog
