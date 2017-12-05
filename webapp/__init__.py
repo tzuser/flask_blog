@@ -51,3 +51,37 @@ def create_app(object_name):
     app.register_blueprint(reptile_blueprint)#爬虫
 
     return app
+
+def create_reptile(object_name):
+    app = Flask(__name__)
+    app.config.from_object(object_name)
+    #跨域
+    CORS(app, supports_credentials=True)
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+    oid.init_app(app)
+    login_manager.init_app(app)
+    principal.init_app(app)
+
+
+    @identity_loaded.connect_via(app)
+    def on_identity_loaded(sender,identity):
+        identity.user=current_user
+
+        if hasattr(current_user,'id'):
+            identity.provides.add(UserNeed(current_user.id))
+
+        if hasattr(current_user,'roles'):
+            for role in current_user.roles:
+                identity.provides.add(RoleNeed(role.name))
+
+
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('blog.home'))
+    
+    app.register_blueprint(reptile_blueprint)#爬虫
+
+    return app

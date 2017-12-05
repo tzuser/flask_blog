@@ -1,5 +1,5 @@
 import requests, time
-from reptileBase import md5,download,downloadFile,postData,add_download,is_download,is_post
+from reptileBase import ReptileBase
 from requests.adapters import HTTPAdapter
 s = requests.Session()
 s.mount('http://', HTTPAdapter(max_retries=3))
@@ -28,19 +28,19 @@ def getData(uid, limit, offset):
         print(e)
         return False;
 
-def start(uid, limit, offset):  # changan-moon
+def start(uid, limit, offset,reptileBase):  # changan-moon
     data = getData(uid, limit, offset)
     if data:
         for item in data:
-            formatData(item)
-    start(uid, limit, offset + limit)
+            formatData(item,reptileBase)
+    start(uid, limit, offset + limit,reptileBase)
 
 
-def formatData(data):
+def formatData(data,reptileBase):
     id = data['id']  # 帖子ID
     blog = data['blog']
     title = blog['title']
-    if is_post(id):
+    if reptileBase.is_post(id):
         print(f'{title} 已存在')
         return False
 
@@ -64,7 +64,7 @@ def formatData(data):
         photo_list = []
         for photo in photos:
             url = photo['original_size']['url']
-            path = download(uid=name, pid=id, url=url)
+            path = reptileBase.download(uid=name, pid=id, url=url)
             if not path:
                 print('图集下载错误')
                 return False
@@ -76,9 +76,9 @@ def formatData(data):
             print('占不支持tumblr以外的视频!')
             return False
         cover = data['thumbnail_url']
-        cover = download(uid=name, pid=id, url=cover, name='cover')  # 下载首图
+        cover = reptileBase.download(uid=name, pid=id, url=cover, name='cover')  # 下载首图
         video_url = data['video_url']
-        video_url = download(uid=name, pid=id, url=video_url, name='video')  # 下载视频
+        video_url = reptileBase.download(uid=name, pid=id, url=video_url, name='video')  # 下载视频
         if not video_url:
             print('视频下载错误')
             return False
@@ -89,9 +89,11 @@ def formatData(data):
     else:
         print('类型<Type {}>未匹配'.format(type))
         return False
-    postData(title, type, summary, date, cover=cover, username=name, read=notes_count, tags=tags,post_hash=id, text=body,
+    reptileBase.postData(title, type, summary, date, cover=cover, username=name, read=notes_count, tags=tags,post_hash=id, text=body,
              video=video_url, photos=photo_list)
 
 #changan-moon
-start('carry9109', 10, 0)
+
+reptileBase=ReptileBase(True)
+start('carry9109', 10, 0,reptileBase)
 #carry9109已转发riena-blog

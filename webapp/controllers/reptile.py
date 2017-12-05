@@ -90,9 +90,9 @@ def is_download():
 @reptile_blueprint.route('/upload', methods=['POST'])
 def uploaduploadupload():
     file = request.files['file']
-    filename=request.form.get('filename')
-    path=f"./webapp{filename[0:filename.rfind('/')+1]}"
-    name=filename[filename.rfind('/')+1:]
+    fileName=request.form.get('fileName')
+    path=f"./webapp{fileName[0:fileName.rfind('/')+1]}"
+    name=fileName[fileName.rfind('/')+1:]
     # 创建下载目录
     if not os.path.exists(path):
         os.makedirs(path)

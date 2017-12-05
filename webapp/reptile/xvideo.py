@@ -1,5 +1,5 @@
 import requests, time, re
-from reptileBase import md5, download, downloadFile, postData, add_download, is_download, is_post
+from reptileBase import ReptileBase
 from requests.adapters import HTTPAdapter
 from lxml import html
 from sys import argv
@@ -9,7 +9,7 @@ s.mount('http://', HTTPAdapter(max_retries=3))
 s.mount('https://', HTTPAdapter(max_retries=3))
 
 
-def getVideo(url,uid):
+def getVideo(url,uid,reptileBase):
     req = requests.post(url)
     htmlStr = req.text
     tree = html.fromstring(htmlStr)
@@ -29,7 +29,7 @@ def getVideo(url,uid):
     if matchObj:
         pid = matchObj.group(1)  # pid
 
-    if is_post(pid):
+    if reptileBase.is_post(pid):
         print(f'{title} 已存在')
         return False
     matchObj = re.match(r'.*setVideoUrlHigh\(\'(.*?)\'.*', htmlStr, re.S | re.I)
@@ -42,9 +42,9 @@ def getVideo(url,uid):
     matchObj = re.match(r'.*setThumbUrl169\(\'(.*?)\'.*', htmlStr, re.S | re.I)
     if matchObj:
         cover = matchObj.group(1)  # 视频封面
-        cover = download(uid=uid, pid=pid, url=cover, name='cover')
+        cover = reptileBase.download(uid=uid, pid=pid, url=cover, name='cover')
 
-    video = download(uid=uid, pid=pid, url=video, name='video')
+    video = reptileBase.download(uid=uid, pid=pid, url=video, name='video')
     if not video:
         print('视频下载错误')
         return False
@@ -53,12 +53,12 @@ def getVideo(url,uid):
     read = tree.xpath('//strong[@id="nb-views-number"]/text()')[0]
     read = int(read.replace(',', ''))
 
-    postData(title, type, '', publish_date=int(time.time()), cover=cover, username=uid,nickname=nickname, read=read, tags=tags,
+    reptileBase.postData(title, type, '', publish_date=int(time.time()), cover=cover, username=uid,nickname=nickname, read=read, tags=tags,
              post_hash=pid, text='', video=video, photos=[])
 
 
 # typeKey 类型
-def start(name, page, typeKey=0):
+def start(name, page, typeKey,reptileBase):
     # pornstar 明星 best 用户
     types = ['pornstar', 'best']
     url=f"https://www.xvideos.com/profiles/{name}/videos/{types[typeKey]}/{page}"
@@ -81,14 +81,14 @@ def start(name, page, typeKey=0):
         pages = int(page_a_list[0]) - 1  # 总页面
 
     for href in href_list:
-        getVideo(f'https://www.xvideos.com{href}',name)
+        getVideo(f'https://www.xvideos.com{href}',name,reptileBase)
     print(f'当前页{page}/{pages}下载完成')
     if page < pages:
-        return start(name, page + 1, typeKey)
+        return start(name, page + 1, typeKey , reptileBase)
 
 #yui-hatano-1
 if __name__=="__main__":
-	name=argv[1]
-	typeKey = int(argv[2])
-    isUpload = int(argv[3])
-	start(name=name, page=0, typeKey=typeKey,isUpload=isUpload)
+    name=argv[1]
+    typeKey=int(argv[2])
+    reptileBase=ReptileBase(True)
+    start(name=name, page=0, typeKey=typeKey,reptileBase=reptileBase)
