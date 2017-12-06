@@ -93,7 +93,5 @@ def formatData(data,reptileBase):
              video=video_url, photos=photo_list)
 
 #changan-moon
-
 reptileBase=ReptileBase(True)
 start('donshofer', 10, 0,reptileBase)
-#carry9109已转发riena-blog
