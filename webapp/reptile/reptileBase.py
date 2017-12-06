@@ -13,7 +13,7 @@ class ReptileBase(object):
     isFar=False
     def __init__(self,isFar):
         if isFar :
-            self.host='http://tzuser.oicp.net/'
+            self.host='http://liequ.wicp.net/'
         self.isFar=isFar
 
     def md5(self,str):
@@ -50,18 +50,29 @@ class ReptileBase(object):
 
         if(self.isFar):
             self.uploadFile(savePath,postPath)
+            
+
         self.add_download(hash,url,postPath)
         return postPath
 
     def uploadFile(self,savePath,fileName):
-        files = {'file': open(savePath, 'rb')}
+        f=open(savePath, 'rb')
+        files = {'file':f }
         data = {
             'fileName': fileName
         }
-        r = requests.post(f'{self.host}reptile/upload', data=data, files=files)
+        try:
+            r = requests.post(f'{self.host}reptile/upload', data=data, files=files)
+        except requests.exceptions.ConnectionError as e:
+            print('上传文件失败 重试',e)
+            f.close()
+            return uploadFile(self,savePath,fileName)
+
         resData=r.json()
         if resData['status']==0:
             print('文件上传成功')
+            f.close()
+            os.remove(savePath)#删除文件
             return True
         else:
             return self.uploadFile(savePath,fileName)
