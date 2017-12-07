@@ -67,7 +67,7 @@ class ReptileBase(object):
         except Exception as e:
             print('上传文件失败 重试',e)
             f.close()
-            return uploadFile(self,savePath,fileName)
+            return self.uploadFile(self,savePath,fileName)
         resData=r.json()
         if resData['status']==0:
             print('文件上传成功')
