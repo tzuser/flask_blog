@@ -63,7 +63,7 @@ class ReptileBase(object):
         }
         try:
             r = requests.post(f'{self.host}reptile/upload', data=data, files=files)
-        except requests.exceptions.ConnectionError as e:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
             print('上传文件失败 重试',e)
             f.close()
             return uploadFile(self,savePath,fileName)
@@ -72,7 +72,7 @@ class ReptileBase(object):
         if resData['status']==0:
             print('文件上传成功')
             f.close()
-            os.remove(savePath)#删除文件
+            #os.remove(savePath)#删除文件
             return True
         else:
             return self.uploadFile(savePath,fileName)

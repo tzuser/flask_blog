@@ -77,7 +77,6 @@ def start(date, page,reptileBase):
     tree = html.fromstring(htmlStr)
     a_list = tree.xpath('//div[@class="thumb-block "]/p/a[1]')
     href_list = [a.get('href') for a in a_list]
-    print(href_list)
     for href in href_list:
         getVideo(f'https://www.xvideos.com{href}',date,reptileBase)
     print(f'当前页{page}下载完成')
@@ -87,5 +86,5 @@ def start(date, page,reptileBase):
 #yui-hatano-1
 if __name__=="__main__":
     date=argv[1]
-    reptileBase=ReptileBase(False)
+    reptileBase=ReptileBase(True)
     start(date=date, page=0,reptileBase=reptileBase)
