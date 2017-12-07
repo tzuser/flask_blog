@@ -1,6 +1,7 @@
 import requests, os, json, time
 import hashlib
-import urllib
+import urllib3
+from socket import error as SocketError
 from download import download as downloadFile
 from requests.adapters import HTTPAdapter
 s = requests.Session()
@@ -63,11 +64,10 @@ class ReptileBase(object):
         }
         try:
             r = requests.post(f'{self.host}reptile/upload', data=data, files=files)
-        except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
+        except Exception as e:
             print('上传文件失败 重试',e)
             f.close()
             return uploadFile(self,savePath,fileName)
-
         resData=r.json()
         if resData['status']==0:
             print('文件上传成功')
