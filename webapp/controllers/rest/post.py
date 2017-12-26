@@ -28,6 +28,7 @@ photo_fields={
 }
 
 post_fields={
+    'id':fields.Integer(),
     'title':fields.String(),
     'text':fields.String(),
     'type':fields.String(),

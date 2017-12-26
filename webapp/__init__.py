@@ -1,4 +1,4 @@
-from flask import Flask,redirect,url_for,g
+from flask import Flask,redirect,url_for,g,render_template,make_response,abort
 from .config import DevConfig
 from .extensions import bcrypt,oid,login_manager,principal,rest_api
 from .models import db,User,Post,Tag,Comment,tags
@@ -44,7 +44,8 @@ def create_app(object_name):
 
     @app.route('/')
     def index():
-        return redirect(url_for('blog.home'))
+        resp = make_response('zxcv',304)
+        return resp
 
     app.register_blueprint(main_blueprint)#系统
     app.register_blueprint(blog_blueprint)#博客
@@ -78,9 +79,12 @@ def create_reptile(object_name):
 
 
 
-    @app.route('/')
-    def index():
-        return redirect(url_for('blog.home'))
+    # @app.route('/')
+    # def index():
+    #     resp = make_response(render_template(('login.html')))   
+    #     resp.headers['Status Code'] = 1234
+    #     return resp
+        #return redirect(url_for('blog.home'))
     
     app.register_blueprint(reptile_blueprint)#爬虫
 
